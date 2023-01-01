@@ -1,0 +1,5 @@
+ClientOnionAuthDir Tor\onion-auth
+GeoIPFile Tor\geoip
+DataDirectory Tor
+GeoIPv6File Tor\geoip6
+ExitNodes {dk} StrictNodes 0
