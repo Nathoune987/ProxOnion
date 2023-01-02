@@ -3,7 +3,7 @@ from colorama import Fore, init
 from ctypes import windll
 from time import sleep
 from subprocess import run, DEVNULL, Popen, check_output
-from sys import stdout
+from requests import get
 
 system("title " + "ProxOnion")
 system("cls")
@@ -18,22 +18,13 @@ def process_exists(process_name):
     else:
         return False
 
-def progressbar(it, prefix="", size=60, out=stdout):
-    count = len(it)
-    def show(j):
-        x = int(size*j/count)
-        caracter_before = "."*(size-x)
-        caracter_after = "#"*x
-        print(f"{Fore.CYAN}{prefix}[{caracter_after}{caracter_before}] {j}/{count}" + Fore.WHITE, end='\r', file=out, flush=True)
-    show(0)
-    for i, item in enumerate(it):
-        yield item
-        show(i+1)
-    print("\n", flush=True, file=out)
+def is_tor_running():
+    #To see if Tor is running completely, a proxy query is made on an example site
+    get('https://example.com', proxies={"http": "socks5://127.0.0.1:9050", "https": "socks5://127.0.0.1:9050"})
 
 def credits():
     system("cls")
-    print(f"""{Fore.CYAN}
+    input(f"""{Fore.CYAN}
                                        WWNW         
                                  WNXXNNNXNW     
                              WWNX00K000KNW      
@@ -53,8 +44,8 @@ def credits():
           0;:0NNXK0KXNNNNNKOkO0kkx:;lcccccc,.lX        
          X:;ONNKO0XNNNNXXXKOxkOOxx:':ccc::::'.dW                {Fore.LIGHTBLUE_EX}- Willem{Fore.CYAN}
          x,oNNKOKNNNXKKXXNXOOkkOkd:.;::::::;;.;K                   {Fore.LIGHTBLUE_EX}Discord : willem#4488{Fore.CYAN}
-        Wo,kNKO0NNX00KXNNNKOkOkxkd;.,:;;;;;;;.'O                   {Fore.LIGHTBLUE_EX}Email : informaion_kazaar@simplelogin.com{Fore.CYAN}
-        Wo,kN0kXNXO0XNNNXK0xdk0xdo,.,;;;;;,,,.'O                   {Fore.LIGHTBLUE_EX}GitHub : https://github.com/willem25{Fore.CYAN}
+        Wo,kNKO0NNX00KXNNNKOkOkxkd;.,:;;;;;;;.'O                   {Fore.LIGHTBLUE_EX}Email : contact.fw996@slmail.me{Fore.CYAN}
+        Wo,kN0kXNXO0XNNNXK0xdk0xdo,.,;;;;;,,,.'O                   {Fore.LIGHTBLUE_EX}GitHub : https://github.com/willem895{Fore.CYAN}
          Nl;ON0kKOOXNNN0OXXOkdxxl:..',,,,,,'..xW       
           Kc:OX0k0kOXNNOOXX0kddd:,..',,,'''..oN            {Fore.LIGHTBLUE_EX}Press {Fore.CYAN}Enter {Fore.LIGHTBLUE_EX}to return to the main menu.{Fore.CYAN}
            Xo:o00kkkOXN0kKXOkdol,...'''''..'xN         
@@ -62,7 +53,6 @@ def credits():
               WKxlc;,,:odolc;,.  ....';lkX      
                  WN0xollllc::;;;:cldkKN         
                         WWNNNNNWW""")
-    input()
     system("cls")
     home()
 
@@ -77,13 +67,11 @@ def disable_tor_proxy():
             print(f"{Fore.LIGHTRED_EX}Tor is not launched, disabling the proxy.\r\n{Fore.WHITE}")
         #Command to disable the proxy with regedit
         run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f', stdout=DEVNULL)
-        print(f"{Fore.LIGHTGREEN_EX}Proxy successfully disabled.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic no longer passes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For enable the proxy, choose option {Fore.CYAN}\"[1] Set Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
-        input()
+        input(f"{Fore.LIGHTGREEN_EX}Proxy successfully disabled.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic no longer passes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For enable the proxy, choose option {Fore.CYAN}\"[1] Set Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
         system("cls")
         home()
     else:
-        print(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
-        input()
+        input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
         system("cls")
         home()
 
@@ -96,19 +84,21 @@ def set_tor_proxy_debug():
         except FileNotFoundError:
             pass
         Popen(tor_launch_cmd)
-        sleep(10)
-        #Command to activate the proxy with regedit
-        system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f')
-        system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f')
-        #Verify that the changes are applied
-        system(r'netsh winhttp import proxy source=ie')
-        print(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
-        input()
-        system("cls")
-        home()
+        while True:
+            try:
+                is_tor_running()
+                #Command to activate the proxy with regedit
+                system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f')
+                system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f')
+                #Verify that the changes are applied
+                system(r'netsh winhttp import proxy source=ie')
+                input(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
+                system("cls")
+                home()
+            except:
+                pass
     else:
-        print(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
-        input()
+        input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
         system("cls")
         home()
 
@@ -121,19 +111,21 @@ def set_tor_proxy_silent():
             chdir("assets")
         except FileNotFoundError:
             pass
+        #Open Tor in silent
         Popen(tor_launch_cmd, creationflags=8, close_fds=True)
-        for i in progressbar(range(10), "Loading : ", 40):
-            sleep(1)
-        #Command to activate the proxy with regedit
-        run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f', stdout=DEVNULL)
-        run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f', stdout=DEVNULL)
-        print(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
-        input()
-        system("cls")
-        home()
+        while True:
+            try:
+                is_tor_running()
+                #Command to activate the proxy with regedit
+                run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f', stdout=DEVNULL)
+                run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f', stdout=DEVNULL)
+                input(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
+                system("cls")
+                home()
+            except:
+                pass
     else:
-        print(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
-        input()
+        input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
         system("cls")
         home()
 
@@ -178,12 +170,11 @@ To see all available countries : {Fore.LIGHTBLUE_EX}https://pastebin.com/raw/CNT
         if country_exit_node in available_country:
             torrc_file = open(path.join("Tor/torrc"), "w")
         else:
-            print(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}invalid country code.")
+            input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}invalid country code.")
             system("cls")
             home()
-
-    torrc_file.write(f"""ClientOnionAuthDir Tor\onion-auth
-GeoIPFile Tor\geoip
+    #Write to the torrc file to change the location of the exit node
+    torrc_file.write(f"""GeoIPFile Tor\geoip
 DataDirectory Tor
 GeoIPv6File Tor\geoip6
 ExitNodes {{{country_exit_node}}} StrictNodes 0""")
@@ -209,8 +200,7 @@ def set_tor_proxy_localisation_menu():
 {Fore.WHITE} ║            [{Fore.CYAN}0{Fore.WHITE}]{Fore.LIGHTBLUE_EX} Return To Main Menu                                                                                {Fore.WHITE} ║
 {Fore.WHITE} ║                                                                                                                   {Fore.WHITE} ║
 {Fore.WHITE} ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────""")
-    choice = input(
-            f"\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}")
+    choice = input(f"\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}")
     global tor_launch_cmd
     if choice == "1":
         tor_launch_cmd = r"tor.exe"
@@ -219,6 +209,7 @@ def set_tor_proxy_localisation_menu():
         elif set_proxy_mod == "debug":
             set_tor_proxy_debug()
     elif choice == "2":
+        #Command to support the torrc file
         tor_launch_cmd = r"tor.exe -f Tor\\torrc"
         custom_localization_exit_node()
     elif choice == "0":
@@ -244,8 +235,7 @@ def set_tor_proxy_mod_menu():
 {Fore.WHITE} ║          [{Fore.CYAN}0{Fore.WHITE}]{Fore.LIGHTBLUE_EX} Return To Main Menu                                                                                  {Fore.WHITE} ║
 {Fore.WHITE} ║                                                                                                                   {Fore.WHITE} ║
 {Fore.WHITE} ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────""")
-    choice = input(
-            f"\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}")
+    choice = input(f"\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}")
     if choice == "1":
         global set_proxy_mod
         set_proxy_mod = "silent"
@@ -276,8 +266,7 @@ def home():
 {Fore.WHITE} ║                  [{Fore.CYAN}3{Fore.WHITE}]{Fore.LIGHTBLUE_EX} Credits                                            {Fore.WHITE}[{Fore.CYAN}4{Fore.WHITE}]{Fore.LIGHTBLUE_EX} Quit                                  {Fore.WHITE} ║
 {Fore.WHITE} ║                                                                                                                   {Fore.WHITE} ║
 {Fore.WHITE} ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────""")
-    choice = input(
-            f'\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}')
+    choice = input(f'\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}')
     if choice == "1":
         set_tor_proxy_mod_menu()
     elif choice == "2":
@@ -285,6 +274,8 @@ def home():
     elif choice == "3":
         credits()
     elif choice == "4":
+        print(f"{Fore.LIGHTBLUE_EX}\r\nThank you for using our tool and see you soon !")
+        sleep(2)
         exit()
     else:
         system("cls")
