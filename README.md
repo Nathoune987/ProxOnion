@@ -70,3 +70,8 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
 ## ❓ Suggestions
 
 If you have any questions or suggestions, please open an [issue](https://github.com/Nathoune987/ProxOnion/issues). 
+
+
+<h1 align="center">
+<a href="https://github.com/Nathoune987/ProxOnion"><img src="https://i.imgur.com/scktAzP.png"></a>
+</h1>
