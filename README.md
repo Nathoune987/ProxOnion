@@ -28,20 +28,43 @@ Install the latest version of [Python](https://www.python.org/downloads/) : http
 Install the packages needed to run the tool.
 
 ```
-pip install -r requriements.txt
+pip install -r requirements.txt
 ```
 
 Run `ProxOnion.py`.
 
-Or simply download and run the realease.
+Or simply download and run the [realease](https://github.com/Nathoune987/ProxOnion/releases/tag/ProxOnion_v1.0).
+
+## Usage
+
+### Set Proxy :
+
+- To connect to the Tor proxy, choose option `1`.  
+- You can choose between `Silent Mode` and `Debug Mode`. The first one does not display anything in the console about what is going on. The other one displays all the actions that the tool does (it is to be used for computer geeks or if you have problems with the silent mode)
+- Then you can choose whether the proxy will be on a `Random Localization` or a `Custom Localization`. If you choose the former, no further steps will be necessary. If you choose the second one, you will have the choice between all available countries. Just enter your choice (everything is explained in the tool).
+- Tor will then launch and the proxy will be set up.
+
+ **WARNING : close ProxOnion with option `4` in the main menu otherwise errors will be caused.**
+
+### Disable Proxy :
+
+- To disable the proxy, choose option `2`.
+- Tor will then close and the proxy will be disabled.
+
+
 ## Credits
 
 - Nathoune<br>
     Discord : `Nathoune#3630`<br>
     Email : `nathoune987@proton.me`<br>
-    GitHub : `https://github.com/Nathoune987`<br>
+    GitHub : https://github.com/Nathoune987
 
 - Willem<br>
     Discord : `willem#4488`<br>
     Email : `contact.fw996@slmail.me` or `hjjhzjhdzqkj@mail.ru`<br>
-    GitHub : `https://github.com/willem895`
+    GitHub : https://github.com/willem895
+
+
+## Suggestions
+
+If you have any questions or suggestions, please open an [issue](https://github.com/Nathoune987/ProxOnion/issues). 
