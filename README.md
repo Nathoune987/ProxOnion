@@ -11,7 +11,7 @@
 <a href="https://github.com/Nathoune987/ProxOnion/releases/tag/ProxOnion_v1.0"><img src="https://i.imgur.com/c6i4Era.png" width="250"></a>
 </h1>
 
-## Features
+## 🚀 Features
 
 - Automatically set up the Tor proxy on your device.
 - Choose the location of the exit node.
@@ -21,21 +21,21 @@
 
 ProxOnion allows you to automatically setup the Tor proxy without wasting time.
 
-## Installation
+## ⬇️ Installation
 
 Install the latest version of [Python](https://www.python.org/downloads/) : https://www.python.org/downloads/
 
 Install the packages needed to run the tool.
 
 ```
-pip install -r requirements.txt
+pip install -r requriements.txt
 ```
 
 Run `ProxOnion.py`.
 
 Or simply download and run the [realease](https://github.com/Nathoune987/ProxOnion/releases/tag/ProxOnion_v1.0).
 
-## Usage
+## 🧪 Usage
 
 ### Set Proxy :
 
@@ -52,12 +52,14 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
 - Tor will then close and the proxy will be disabled.
 
 
-## Credits
+## 🔧 Credits
 
 - Nathoune<br>
     Discord : `Nathoune#3630`<br>
     Email : `nathoune987@proton.me`<br>
     GitHub : https://github.com/Nathoune987
+
+
 
 - Willem<br>
     Discord : `willem#4488`<br>
@@ -65,6 +67,6 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
     GitHub : https://github.com/willem895
 
 
-## Suggestions
+## ❓ Suggestions
 
 If you have any questions or suggestions, please open an [issue](https://github.com/Nathoune987/ProxOnion/issues). 
