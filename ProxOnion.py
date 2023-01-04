@@ -128,10 +128,11 @@ def set_tor_proxy_silent():
 def random_localisation():
     if path.exists(path.join("assets")):
         lines_torrc_file = open("assets/Tor/torrc", 'r').readlines()
+        torrc_file = open("assets/Tor/torrc", 'w')
     else:
         lines_torrc_file = open("Tor/torrc", 'r').readlines()
-
-    torrc_file = open("assets/Tor/torrc", 'w')
+        torrc_file = open("Tor/torrc", 'w')
+    
     for line in lines_torrc_file:
         if "ExitNodes" not in line:
             torrc_file.write(line)
