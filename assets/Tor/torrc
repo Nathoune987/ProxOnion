@@ -1,1 +1,5 @@
-
+GeoIPFile Tor\geoip
+DataDirectory Tor
+GeoIPv6File Tor\geoip6
+SocksListenAddress 127.0.0.1:13370
+SocksPort 13370
