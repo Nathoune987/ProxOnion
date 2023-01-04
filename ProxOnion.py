@@ -1,4 +1,4 @@
-from os import system, chdir, path
+from os import system, chdir, path, _exit
 from colorama import Fore, init
 from ctypes import windll
 from time import sleep
@@ -20,7 +20,7 @@ def process_exists(process_name):
 
 def is_tor_running():
     #To see if Tor is running completely, a proxy query is made on an example site
-    get('https://example.com', proxies={"http": "socks5://127.0.0.1:9050", "https": "socks5://127.0.0.1:9050"})
+    get("https://torproject.org/", proxies={"http": "socks5://127.0.0.1:13370", "https": "socks5://127.0.0.1:13370"})
 
 def credits():
     system("cls")
@@ -57,10 +57,8 @@ def credits():
     home()
 
 def disable_tor_proxy():
-    #Check if the script is launched in the adminstrator
     if windll.shell32.IsUserAnAdmin():
         print(f"{Fore.LIGHTBLUE_EX}\r\nKill Tor, and disable the proxy.\r\n{Fore.WHITE}")
-        #Close tor.exe
         if process_exists('tor.exe'):
             run("TASKKILL /F /IM tor.exe", stdout=DEVNULL)
         else:
@@ -76,20 +74,19 @@ def disable_tor_proxy():
         home()
 
 def set_tor_proxy_debug():
-    #Check if the script is launched in the adminstrator
     if windll.shell32.IsUserAnAdmin():
         print(f"{Fore.LIGHTBLUE_EX}\r\nLaunching Tor, please wait a moment.\r\n{Fore.WHITE}")
         try:
             chdir("assets")
         except FileNotFoundError:
             pass
-        Popen(tor_launch_cmd)
+        Popen(r"tor.exe -f Tor/torrc")
         while True:
             try:
                 is_tor_running()
                 #Command to activate the proxy with regedit
                 system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f')
-                system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f')
+                system(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:13370" /f')
                 #Verify that the changes are applied
                 system(r'netsh winhttp import proxy source=ie')
                 input(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
@@ -103,7 +100,6 @@ def set_tor_proxy_debug():
         home()
 
 def set_tor_proxy_silent():
-    #Check if the script is launched in the adminstrator
     if windll.shell32.IsUserAnAdmin():
         print(f"{Fore.LIGHTBLUE_EX}\r\nLaunching Tor, please wait a moment.{Fore.WHITE}\r\n")
         #Open tor.exe in silent mode
@@ -112,13 +108,13 @@ def set_tor_proxy_silent():
         except FileNotFoundError:
             pass
         #Open Tor in silent
-        Popen(tor_launch_cmd, creationflags=8, close_fds=True)
+        Popen(r"tor.exe -f Tor/torrc", creationflags=8, close_fds=True)
         while True:
             try:
                 is_tor_running()
                 #Command to activate the proxy with regedit
                 run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f', stdout=DEVNULL)
-                run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:9050" /f', stdout=DEVNULL)
+                run(r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "socks=127.0.0.1:13370" /f', stdout=DEVNULL)
                 input(f"{Fore.LIGHTGREEN_EX}Proxy setup successfully.\r\n\r\n{Fore.LIGHTBLUE_EX}Your Internet traffic now goes through the Tor servers. You can return to the main menu by pressing {Fore.CYAN}Enter{Fore.LIGHTBLUE_EX}.\r\nTo quit, use the {Fore.CYAN}\"[4] Quit option\"{Fore.LIGHTBLUE_EX}, to avoid errors. For disable the proxy, choose option {Fore.CYAN}\"[2] Disable Tor Proxy\"{Fore.LIGHTBLUE_EX}.")
                 system("cls")
                 home()
@@ -128,6 +124,23 @@ def set_tor_proxy_silent():
         input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}run this in administrator.")
         system("cls")
         home()
+
+def random_localisation():
+    if path.exists(path.join("assets")):
+        lines_torrc_file = open("assets/Tor/torrc", 'r').readlines()
+    else:
+        lines_torrc_file = open("Tor/torrc", 'r').readlines()
+
+    torrc_file = open("assets/Tor/torrc", 'w')
+    for line in lines_torrc_file:
+        if "ExitNodes" not in line:
+            torrc_file.write(line)
+    torrc_file.close()
+
+    if set_proxy_mod == "silent":
+        set_tor_proxy_silent()
+    elif set_proxy_mod == "debug":
+        set_tor_proxy_debug()
 
 def custom_localization_exit_node():
     system("cls")
@@ -159,7 +172,7 @@ To see all available countries : {Fore.LIGHTBLUE_EX}https://pastebin.com/raw/CNT
             available_country = [line.rstrip() for line in country_codes]
         #If the country code is correct
         if country_exit_node in available_country:
-            torrc_file = open(path.join("assets/Tor/torrc"), "w")
+            torrc_file = open(path.join("assets/Tor/torrc"), "a")
         else:
             input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}invalid country code.")
             system("cls")
@@ -168,16 +181,13 @@ To see all available countries : {Fore.LIGHTBLUE_EX}https://pastebin.com/raw/CNT
         with open("country_codes.txt") as country_codes:
             available_country = [line.rstrip() for line in country_codes]
         if country_exit_node in available_country:
-            torrc_file = open(path.join("Tor/torrc"), "w")
+            torrc_file = open(path.join("Tor/torrc"), "a")
         else:
             input(f"\r\n{Fore.LIGHTRED_EX}[!] Error {Fore.LIGHTBLUE_EX}invalid country code.")
             system("cls")
             home()
     #Write to the torrc file to change the location of the exit node
-    torrc_file.write(f"""GeoIPFile Tor\geoip
-DataDirectory Tor
-GeoIPv6File Tor\geoip6
-ExitNodes {{{country_exit_node}}} StrictNodes 0""")
+    torrc_file.write(f"\r\nExitNodes {{{country_exit_node}}} StrictNodes 0")
     torrc_file.close()
     if set_proxy_mod == "silent":
         set_tor_proxy_silent()
@@ -201,16 +211,9 @@ def set_tor_proxy_localisation_menu():
 {Fore.WHITE} ║                                                                                                                   {Fore.WHITE} ║
 {Fore.WHITE} ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────""")
     choice = input(f"\r\n  {Fore.LIGHTBLUE_EX}[{Fore.CYAN}>{Fore.LIGHTBLUE_EX}] {Fore.WHITE}Choice : {Fore.CYAN}")
-    global tor_launch_cmd
     if choice == "1":
-        tor_launch_cmd = r"tor.exe"
-        if set_proxy_mod == "silent":
-            set_tor_proxy_silent()
-        elif set_proxy_mod == "debug":
-            set_tor_proxy_debug()
+        random_localisation()
     elif choice == "2":
-        #Command to support the torrc file
-        tor_launch_cmd = r"tor.exe -f Tor\\torrc"
         custom_localization_exit_node()
     elif choice == "0":
         system("cls")
@@ -251,7 +254,6 @@ def set_tor_proxy_mod_menu():
         set_tor_proxy_mod_menu()
 
 def home():
-    #The menu of choices
     print(f"""{Fore.CYAN}         
                                      ___                 ___       _             
                                     / _ \_ __ _____  __ /___\_ __ (_) ___  _ __  
@@ -276,7 +278,7 @@ def home():
     elif choice == "4":
         print(f"{Fore.LIGHTBLUE_EX}\r\nThank you for using our tool and see you soon !")
         sleep(2)
-        exit()
+        _exit(0)
     else:
         system("cls")
         home()
