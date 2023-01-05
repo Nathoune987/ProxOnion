@@ -72,6 +72,19 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
 If you have any questions or suggestions, please open an [issue](https://github.com/Nathoune987/ProxOnion/issues). 
 
 
+## 💸Donations
+
+If you like this project or want to support it, you can make donations.
+
+Ethereum : 
+```
+0x43f7B5b062AD6c560ca0B46B8F2D11c64df2B0AD
+```
+Bitcoin :
+```
+bc1q32pf2lg98l273jhvrq8d4kk9jumqt8y8jhfpmp
+```
+
 <h1 align="center">
 <a href="https://github.com/Nathoune987/ProxOnion"><img src="https://i.imgur.com/scktAzP.png"></a>
 </h1>
