@@ -28,7 +28,7 @@ Install the latest version of [Python](https://www.python.org/downloads/) : http
 Install the packages needed to run the tool.
 
 ```
-pip install -r requriements.txt
+pip install -r requirements.txt
 ```
 
 Run `ProxOnion.py`.
