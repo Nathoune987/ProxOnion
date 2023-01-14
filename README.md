@@ -55,14 +55,14 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
 ## 🔧 Credits
 
 - Nathoune<br>
-    Discord : `Nathoune#3630`<br>
+    Discord : `Nathoune#6622`<br>
     Email : `nathoune987@proton.me`<br>
     GitHub : https://github.com/Nathoune987
 
 
 
 - Willem<br>
-    Discord : `willem#4488`<br>
+    Discord : `willem#1823`<br>
     Email : `contact.fw996@slmail.me` or `hjjhzjhdzqkj@mail.ru`<br>
     GitHub : https://github.com/willem895
 
