@@ -60,13 +60,6 @@ Or simply download and run the [realease](https://github.com/Nathoune987/ProxOni
     GitHub : https://github.com/Nathoune987
 
 
-
-- Willem<br>
-    Discord : `willem#1823`<br>
-    Email : `contact.fw996@slmail.me` or `hjjhzjhdzqkj@mail.ru`<br>
-    GitHub : https://github.com/willem895
-
-
 ## ❓ Suggestions
 
 If you have any questions or suggestions, please open an [issue](https://github.com/Nathoune987/ProxOnion/issues). 
